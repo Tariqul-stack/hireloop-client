@@ -46,9 +46,7 @@ export default function Navbar() {
             </svg>
           </div>
           <span className="text-sm font-semibold leading-tight text-white">
-            Programming
-            <br />
-            Hero
+            Hire Loop
           </span>
         </Link>
 

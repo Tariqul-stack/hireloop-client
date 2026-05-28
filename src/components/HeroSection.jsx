@@ -124,7 +124,7 @@ export default function HeroSection() {
           className="mt-5 max-w-xl text-sm leading-relaxed sm:text-base"
           style={{ color: "rgba(255,255,255,0.55)" }}
         >
-          HireLoop connects top talent with world-class companies. Browse
+          Hire Loop connects top talent with world-class companies. Browse
           thousands of curated opportunities and land your next role — faster.
         </p>
 
