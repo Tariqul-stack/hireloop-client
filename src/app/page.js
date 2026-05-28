@@ -1,3 +1,4 @@
+import CTASection from "@/components/CTASection";
 import FeaturesSection from "@/components/FeaturesSection";
 import HeroSection from "@/components/HeroSection";
 import JobDiscoverySection from "@/components/Jobdiscoverysection";
@@ -11,6 +12,7 @@ export default function Home() {
       <JobDiscoverySection></JobDiscoverySection>
       <FeaturesSection></FeaturesSection>
       <PricingSection></PricingSection>
+      <CTASection></CTASection>
       
     </div>
   );
