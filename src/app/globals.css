@@ -1,3 +1,11 @@
 @import "tailwindcss";
 @import "@heroui/styles"; 
 
+/*
+  Override HeroUI dark theme's default body background.
+  Without this, data-theme="dark" sets a solid bg on body
+  which covers the globe image in HeroSection.
+*/
+body {
+  background-color: transparent !important;
+}

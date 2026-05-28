@@ -22,14 +22,14 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-       data-theme="dark"
+      data-theme="dark"
       className={`${geistSans.variable} ${geistMono.variable} dark h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
-        <main>
-          <Navbar></Navbar>
-        {children}
-        <Footer></Footer>
+      <body className="min-h-full flex flex-col bg-transparent">
+        <main className="relative flex flex-col flex-1" style={{ zIndex: 1 }}>
+          <Navbar />
+          {children}
+          <Footer />
         </main>
       </body>
     </html>
