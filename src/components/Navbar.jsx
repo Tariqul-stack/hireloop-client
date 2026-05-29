@@ -68,14 +68,14 @@ export default function Navbar() {
           <div className="mx-3 h-5 w-px bg-white/20" aria-hidden="true" />
 
           <Link
-            href="/sign-in"
+            href="/auth/signin"
             className="rounded-md px-3 py-2 text-sm font-semibold text-violet-400 transition-colors hover:text-violet-300"
           >
             Sign In
           </Link>
 
           <Link
-            href="/get-started"
+            href="/auth/signup"
             className="ml-2 rounded-lg bg-white px-4 py-2 text-sm font-semibold text-gray-900 transition-all hover:bg-white/90 active:scale-95"
           >
             Get Started
@@ -133,7 +133,7 @@ export default function Navbar() {
             </li>
             <li className="pb-1">
               <Link
-                href="/get-started"
+                href="/auth/signup"
                 className="block rounded-lg bg-white px-4 py-2.5 text-center text-sm font-semibold text-gray-900 hover:bg-white/90 transition-all active:scale-95"
                 onClick={() => setIsMenuOpen(false)}
               >
