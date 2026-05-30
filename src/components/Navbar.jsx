@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Bars, Xmark } from "@gravity-ui/icons";
+import { useSession, signOut } from "@/lib/auth-client";
+import { Button } from "@heroui/react";
 
 const navLinks = [
   { label: "Browse Jobs", href: "/jobs" },
@@ -13,6 +15,13 @@ const navLinks = [
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { data: session, isPending } = useSession();
+  // console.log("session data:", session, "Is pending:", isPending);
+  const user = session?.user;
+
+  const handleSignOut = async () => {
+    await signOut();
+  };
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -67,12 +76,21 @@ export default function Navbar() {
 
           <div className="mx-3 h-5 w-px bg-white/20" aria-hidden="true" />
 
-          <Link
-            href="/auth/signin"
-            className="rounded-md px-3 py-2 text-sm font-semibold text-violet-400 transition-colors hover:text-violet-300"
-          >
-            Sign In
-          </Link>
+          {user ? (
+            <>
+              Hi, {user.name}!
+              <Button onClick={handleSignOut} variant="ghost">
+                SignOut
+              </Button>
+            </>
+          ) : (
+            <Link
+              href="/auth/signin"
+              className="rounded-md px-3 py-2 text-sm font-semibold text-violet-400 transition-colors hover:text-violet-300"
+            >
+              Sign In
+            </Link>
+          )}
 
           <Link
             href="/auth/signup"

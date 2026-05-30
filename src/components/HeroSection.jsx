@@ -2,12 +2,13 @@
 
 import {
   Magnifier,
-  GeoPin,
+  MapPin,
   Briefcase,
   ChartColumn,
   Persons,
   StarFill,
 } from "@gravity-ui/icons";
+import { TypewriterInput } from "./TypewriterInput";
 
 const trendingPositions = [
   "Product Designer",
@@ -136,14 +137,10 @@ export default function HeroSection() {
             backdropFilter: "blur(12px)",
           }}
         >
-          <Magnifier className="h-4 w-4 shrink-0 text-white/40" />
-          <input
-            type="text"
-            placeholder="Job title, skill or company"
-            className="flex-1 bg-transparent px-3 py-3 text-sm text-white placeholder:text-white/35 outline-none"
-          />
+          <Magnifier className="h-6 w-6 pr-2 shrink-0 text-white/40" />
+          <TypewriterInput />
           <div className="h-5 w-px bg-white/20 mx-1" aria-hidden />
-          <GeoPin className="h-4 w-4 shrink-0 text-white/40 ml-3" />
+          <MapPin className="h-4 w-4 shrink-0 text-white/40 ml-3" />
           <input
             type="text"
             placeholder="Location or Remote"
