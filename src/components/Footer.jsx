@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { LogoFacebook, LogoLinkedin, LogoGithub } from "@gravity-ui/icons";
 
 const footerLinks = {
@@ -43,6 +44,10 @@ const socialLinks = [
 ];
 
 export default function Footer() {
+  const pathname = usePathname();
+  if (pathname && pathname.startsWith("/dashboard")) {
+    return null;
+  }
   return (
     <footer className="w-full bg-[#0a0a0a] border-t border-white/5">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Bars, Xmark, ChevronDown } from "@gravity-ui/icons";
 import { authClient } from "@/lib/auth-client";
 
@@ -15,11 +16,11 @@ const navLinks = [
 function UserAvatar({ user, size = "h-8 w-8" }) {
   const initials = user?.name
     ? user.name
-        .split(" ")
-        .map((n) => n[0])
-        .join("")
-        .toUpperCase()
-        .slice(0, 2)
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2)
     : (user?.email?.[0]?.toUpperCase() ?? "?");
 
   if (user?.image) {
@@ -137,6 +138,7 @@ function UserMenu({ user }) {
 }
 
 export default function Navbar() {
+  const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { data: session, isPending } = authClient.useSession();
@@ -147,6 +149,10 @@ export default function Navbar() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  if (pathname && pathname.startsWith("/dashboard")) {
+    return null;
+  }
 
   return (
     <nav
@@ -174,9 +180,7 @@ export default function Navbar() {
             </svg>
           </div>
           <span className="text-sm font-semibold leading-tight text-white">
-            Programming
-            <br />
-            Hero
+            Hire Loop
           </span>
         </Link>
 
