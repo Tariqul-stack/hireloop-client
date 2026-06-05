@@ -23,6 +23,7 @@ export default function SignUpPage() {
   const [status, setStatus] = useState(null); // { type: "success" | "error", message: string }
   const [formData, setFormData] = useState({
     name: "",
+    role: "jobSeeker",
     email: "",
     password: "",
     confirmPassword: "",
@@ -56,6 +57,7 @@ export default function SignUpPage() {
         name: formData.name,
         email: formData.email,
         password: formData.password,
+        role: formData.role,
       });
 
       if (error) {
@@ -68,7 +70,7 @@ export default function SignUpPage() {
           type: "success",
           message: "Account created! Check your email to verify your account.",
         });
-        setFormData({ name: "", email: "", password: "", confirmPassword: "" });
+        setFormData({ name: "", role: "jobSeeker", email: "", password: "", confirmPassword: "" });
       }
     } catch {
       setStatus({
@@ -320,6 +322,48 @@ export default function SignUpPage() {
                       onChange={handleChange}
                       className="flex-1 bg-transparent text-sm text-white placeholder:text-white/25 outline-none"
                     />
+                  </div>
+                </div>
+
+                {/* Role selection */}
+                <div className="flex flex-col gap-1.5">
+                  <label
+                    className="text-xs font-medium"
+                    style={{ color: "rgba(255,255,255,0.5)" }}
+                  >
+                    I want to sign up as a
+                  </label>
+                  <div className="flex gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setFormData({ ...formData, role: "jobSeeker" })}
+                      className="flex-1 rounded-xl py-3 text-sm font-semibold text-white transition-all border"
+                      style={{
+                        backgroundColor:
+                          formData.role === "jobSeeker" ? "#7c3aed" : "#1a1a1a",
+                        borderColor:
+                          formData.role === "jobSeeker"
+                            ? "#7c3aed"
+                            : "rgba(255,255,255,0.1)",
+                      }}
+                    >
+                      Job Seeker
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setFormData({ ...formData, role: "recruiter" })}
+                      className="flex-1 rounded-xl py-3 text-sm font-semibold text-white transition-all border"
+                      style={{
+                        backgroundColor:
+                          formData.role === "recruiter" ? "#7c3aed" : "#1a1a1a",
+                        borderColor:
+                          formData.role === "recruiter"
+                            ? "#7c3aed"
+                            : "rgba(255,255,255,0.1)",
+                      }}
+                    >
+                      Recruiter
+                    </button>
                   </div>
                 </div>
 
