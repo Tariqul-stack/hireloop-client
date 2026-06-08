@@ -36,6 +36,7 @@ export default function PostJobPage() {
     try {
       const jobData = {
         ...formData,
+        companyId: session?.user?.id,
         recruiterId: session?.user?.id,
         recruiterName: session?.user?.name,
         recruiterEmail: session?.user?.email,
