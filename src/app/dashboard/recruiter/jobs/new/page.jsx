@@ -47,7 +47,7 @@ export default function PostJobPage() {
       if (result?.insertedId) {
         toast.success("Job posted successfully!");
         setTimeout(() => {
-          router.push("/dashboard/recruiter");
+          router.push("/dashboard/recruiter/jobs");
         }, 1500);
       } else {
         toast.error("Failed to post job. Please try again.");
@@ -118,7 +118,7 @@ export default function PostJobPage() {
       </p>
 
       {/* Form Container */}
-      <div style={{ maxWidth: "800px" }}>
+      <div style={{ maxWidth: "800px", margin: "0 auto" }}>
         <form onSubmit={handleSubmit}>
           {/* Section 1: Job Information */}
           <div style={{ marginBottom: "32px" }}>

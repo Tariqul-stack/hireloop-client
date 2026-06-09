@@ -19,11 +19,11 @@ import {
 function UserAvatar({ user, size = "h-9 w-9" }) {
   const initials = user?.name
     ? user.name
-      .split(" ")
-      .map((n) => n[0])
-      .join("")
-      .toUpperCase()
-      .slice(0, 2)
+        .split(" ")
+        .map((n) => n[0])
+        .join("")
+        .toUpperCase()
+        .slice(0, 2)
     : (user?.email?.[0]?.toUpperCase() ?? "?");
 
   if (user?.image) {
@@ -70,9 +70,18 @@ export default function DashboardSidebar({ isOpen, setIsOpen }) {
   // Recruiter navigation links
   const recruiterLinks = [
     { label: "Dashboard", href: "/dashboard/recruiter", icon: House },
-    { label: "Post a Job", href: "/dashboard/recruiter/post", icon: Plus },
-    { label: "My Listings", href: "/dashboard/recruiter/listings", icon: List },
-    { label: "Applications", href: "/dashboard/recruiter/applications", icon: FileText },
+    { label: "Post a Job", href: "/dashboard/recruiter/jobs/new", icon: Plus },
+    { label: "Jobs", href: "/dashboard/recruiter/jobs", icon: Briefcase },
+    {
+      label: "Company Profile",
+      href: "/dashboard/recruiter/company",
+      icon: List,
+    },
+    {
+      label: "Applications",
+      href: "/dashboard/recruiter/applications",
+      icon: FileText,
+    },
     { label: "Profile", href: "/dashboard/profile", icon: Person },
   ];
 
@@ -96,8 +105,9 @@ export default function DashboardSidebar({ isOpen, setIsOpen }) {
 
       {/* Sidebar container */}
       <aside
-        className={`fixed top-0 bottom-0 left-0 z-50 flex flex-col h-full w-[240px] transition-transform duration-300 md:translate-x-0 ${isOpen ? "translate-x-0" : "-translate-x-full"
-          }`}
+        className={`fixed top-0 bottom-0 left-0 z-50 flex flex-col h-full w-[240px] transition-transform duration-300 md:translate-x-0 ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
         style={{
           backgroundColor: "#111111",
           borderRight: "1px solid rgba(255,255,255,0.08)",
@@ -108,7 +118,11 @@ export default function DashboardSidebar({ isOpen, setIsOpen }) {
           className="flex h-16 items-center justify-between px-6 border-b"
           style={{ borderColor: "rgba(255,255,255,0.08)" }}
         >
-          <Link href="/" className="flex items-center gap-2.5 shrink-0" onClick={handleLinkClick}>
+          <Link
+            href="/"
+            className="flex items-center gap-2.5 shrink-0"
+            onClick={handleLinkClick}
+          >
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-violet-600">
               <svg
                 className="h-4 w-4 text-white"
