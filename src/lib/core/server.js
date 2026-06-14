@@ -1,6 +1,12 @@
-
 'use server'
-const baseUrl = 'http://localhost:8000';
+
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:8000';
+
+export const serverFetch = async (path) => {
+    const res = await fetch(`${baseUrl}${path}`);
+    return res.json();
+}
+
 export const serverMutation = async (path, data) => {
     const res = await fetch(`${baseUrl}${path}`, {
         method: 'POST',
