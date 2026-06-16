@@ -6,7 +6,7 @@ import { GeoPin, Briefcase, CircleDollar, ArrowRight } from "@gravity-ui/icons";
 export default function JobCard({ job }) {
   const {
     title,
-    description,
+    responsibilities,
     location,
     jobType,
     minSalary,
@@ -48,7 +48,7 @@ export default function JobCard({ job }) {
           margin: 0,
         }}
       >
-        {description}
+        {responsibilities ? responsibilities.slice(0, 120) + '...' : 'No description available.'}
       </p>
 
       {/* Tags Row */}
@@ -92,7 +92,7 @@ export default function JobCard({ job }) {
           }}
         >
           <Briefcase size={16} style={{ color: "#a78bfa" }} />
-          {jobType}
+          {jobType ? jobType.charAt(0).toUpperCase() + jobType.slice(1) : ""}
         </div>
 
         {/* Salary Tag */}
@@ -110,7 +110,7 @@ export default function JobCard({ job }) {
           }}
         >
           <CircleDollar size={16} style={{ color: "#a78bfa" }} />
-          {minSalary}–{maxSalary}/{currency}
+          {minSalary}–{maxSalary} {currency?.toUpperCase()}
         </div>
       </div>
 

@@ -1,81 +1,29 @@
-import JobCard from "@/components/JobCard";
+"use client";
 
-const jobs = [
-  {
-    id: 1,
-    title: "Software Engineer",
-    description:
-      "Build and maintain scalable software systems for a fast-growing tech company.",
-    location: "USA",
-    jobType: "Full-time",
-    minSalary: 25000,
-    maxSalary: 35000,
-    currency: "USD",
-    href: "/jobs/1",
-  },
-  {
-    id: 2,
-    title: "Frontend Developer",
-    description:
-      "Showcase your commitment to diversity and inclusion by highlighting initiatives.",
-    location: "New York, USA",
-    jobType: "Hybrid",
-    minSalary: 25,
-    maxSalary: 40,
-    currency: "EUR/hour",
-    href: "/jobs/2",
-  },
-  {
-    id: 3,
-    title: "Product Designer",
-    description:
-      "Create user-centered designs for web and mobile products across multiple platforms.",
-    location: "Remote",
-    jobType: "Full-time",
-    minSalary: 3000,
-    maxSalary: 5000,
-    currency: "USD",
-    href: "/jobs/3",
-  },
-  {
-    id: 4,
-    title: "Backend Engineer",
-    description:
-      "Design and implement robust APIs and microservices for enterprise-level applications.",
-    location: "San Francisco, USA",
-    jobType: "Contract",
-    minSalary: 8000,
-    maxSalary: 12000,
-    currency: "USD",
-    href: "/jobs/4",
-  },
-  {
-    id: 5,
-    title: "DevOps Engineer",
-    description:
-      "Manage cloud infrastructure and CI/CD pipelines for high-availability systems.",
-    location: "Berlin, Germany",
-    jobType: "Full-time",
-    minSalary: 5000,
-    maxSalary: 8000,
-    currency: "EUR",
-    href: "/jobs/5",
-  },
-  {
-    id: 6,
-    title: "AI Engineer",
-    description:
-      "Develop and deploy machine learning models and AI-powered features at scale.",
-    location: "Remote",
-    jobType: "Full-time",
-    minSalary: 10000,
-    maxSalary: 15000,
-    currency: "USD",
-    href: "/jobs/6",
-  },
-];
+import { useState, useEffect } from "react";
+import JobCard from "@/components/JobCard";
+import { toast, Toaster } from "react-hot-toast";
 
 export default function JobsPage() {
+  const [jobs, setJobs] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    fetchJobs();
+  }, []);
+
+  const fetchJobs = async () => {
+    try {
+      const res = await fetch("http://localhost:8000/api/jobs?status=active");
+      const result = await res.json();
+      setJobs(result || []);
+    } catch (error) {
+      toast.error("Failed to load jobs");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div
       style={{
@@ -104,8 +52,6 @@ export default function JobsPage() {
               fontWeight: 700,
               color: "white",
               marginBottom: "8px",
-              margin: 0,
-              marginBottom: "8px",
             }}
           >
             Browse Jobs
@@ -121,19 +67,89 @@ export default function JobsPage() {
           </p>
         </div>
 
+        {/* Loading State */}
+        {isLoading && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              minHeight: "400px",
+            }}
+          >
+            <div
+              style={{
+                width: "32px",
+                height: "32px",
+                border: "2px solid rgba(255, 255, 255, 0.2)",
+                borderTop: "2px solid white",
+                borderRadius: "50%",
+                animation: "spin 1s linear infinite",
+              }}
+            />
+            <style>{`
+              @keyframes spin {
+                to { transform: rotate(360deg); }
+              }
+            `}</style>
+          </div>
+        )}
+
+        {/* Empty State */}
+        {!isLoading && jobs.length === 0 && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              minHeight: "400px",
+            }}
+          >
+            <p style={{ color: "rgba(255, 255, 255, 0.4)", fontSize: "16px" }}>
+              No jobs available.
+            </p>
+          </div>
+        )}
+
         {/* Jobs Grid */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
-            gap: "20px",
-          }}
-        >
-          {jobs.map((job) => (
-            <JobCard key={job.id} job={job} />
-          ))}
-        </div>
+        {!isLoading && jobs.length > 0 && (
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
+              gap: "20px",
+            }}
+          >
+            {jobs.map((job) => (
+              <JobCard
+                key={job._id}
+                job={{
+                  ...job,
+                  href: `/jobs/${job._id}`,
+                }}
+              />
+            ))}
+          </div>
+        )}
       </div>
+
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          style: {
+            backgroundColor: "#1a1a1a",
+            color: "white",
+            border: "1px solid rgba(255, 255, 255, 0.08)",
+            borderRadius: "10px",
+            fontSize: "14px",
+          },
+          success: {
+            iconTheme: {
+              primary: "#7c3aed",
+            },
+          },
+        }}
+      />
     </div>
   );
 }
