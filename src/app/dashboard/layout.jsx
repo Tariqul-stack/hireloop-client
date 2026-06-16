@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import DashboardSidebar from "@/components/dashboard/DashboardSidebar";
-import DashboardTopbar from "@/components/dashboard/DashboardTopbar";
 
 export default function DashboardLayout({ children }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -34,32 +33,18 @@ export default function DashboardLayout({ children }) {
 
   return (
     <div
-      style={{ display: "flex", height: "100vh" }}
+      style={{ display: "flex", flexDirection: "column", height: "100vh" }}
       className="w-full text-white"
     >
-      {/* Sidebar Component */}
-      <DashboardSidebar isOpen={isOpen} setIsOpen={setIsOpen} />
-
-      {/* Content Area Wrapper */}
-      <div
-        style={{
-          flex: 1,
-          display: "flex",
-          flexDirection: "column",
-          overflow: "hidden",
-        }}
-        className="md:pl-[240px]"
-      >
-        {/* Topbar Component */}
-        <DashboardTopbar onMenuClick={() => setIsOpen(true)} />
+      {/* Sidebar + Content row */}
+      <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
+        {/* Sidebar Component */}
+        <DashboardSidebar isOpen={isOpen} setIsOpen={setIsOpen} />
 
         {/* Dynamic page content */}
         <main
-          style={{
-            flex: 1,
-            overflowY: "auto",
-            backgroundColor: "#0a0a0a",
-          }}
+          style={{ flex: 1, overflowY: "auto", backgroundColor: "#0a0a0a" }}
+          className="md:pl-[240px]"
         >
           {children}
         </main>
