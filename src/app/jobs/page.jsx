@@ -3,9 +3,13 @@
 import { useState, useEffect } from "react";
 import JobCard from "@/components/JobCard";
 import { toast, Toaster } from "react-hot-toast";
+import { Magnifier } from "@gravity-ui/icons";
 
 export default function JobsPage() {
   const [jobs, setJobs] = useState([]);
+  const [allJobs, setAllJobs] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortBy, setSortBy] = useState("newest");
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -16,6 +20,7 @@ export default function JobsPage() {
     try {
       const res = await fetch("http://localhost:8000/api/jobs?status=active");
       const result = await res.json();
+      setAllJobs(result || []);
       setJobs(result || []);
     } catch (error) {
       toast.error("Failed to load jobs");
@@ -23,6 +28,28 @@ export default function JobsPage() {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    let filtered = [...allJobs];
+
+    if (searchQuery.trim()) {
+      filtered = filtered.filter((job) =>
+        job.title.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    if (sortBy === "newest") {
+      filtered.sort((a, b) => new Date(b.postedAt) - new Date(a.postedAt));
+    } else if (sortBy === "oldest") {
+      filtered.sort((a, b) => new Date(a.postedAt) - new Date(b.postedAt));
+    } else if (sortBy === "salary-high") {
+      filtered.sort((a, b) => Number(b.maxSalary) - Number(a.maxSalary));
+    } else if (sortBy === "salary-low") {
+      filtered.sort((a, b) => Number(a.minSalary) - Number(b.minSalary));
+    }
+
+    setJobs(filtered);
+  }, [searchQuery, sortBy, allJobs]);
 
   return (
     <div
@@ -67,6 +94,91 @@ export default function JobsPage() {
           </p>
         </div>
 
+        {/* Search and Sort UI */}
+        <div
+          style={{
+            display: "flex",
+            gap: "12px",
+            marginBottom: "32px",
+            flexWrap: "wrap",
+          }}
+        >
+          {/* Search Input */}
+          <div
+            style={{
+              flex: 1,
+              minWidth: "280px",
+              position: "relative",
+            }}
+          >
+            <Magnifier
+              style={{
+                position: "absolute",
+                left: "14px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                color: "rgba(255,255,255,0.35)",
+                height: "16px",
+                width: "16px",
+              }}
+            />
+            <input
+              type="text"
+              placeholder="Search by job title..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              style={{
+                width: "100%",
+                backgroundColor: "#111111",
+                border: "1px solid rgba(255,255,255,0.08)",
+                borderRadius: "10px",
+                color: "white",
+                fontSize: "14px",
+                padding: "12px 14px 12px 40px",
+                outline: "none",
+                boxSizing: "border-box",
+                transition: "border-color 0.2s ease",
+              }}
+              onFocus={(e) =>
+                (e.currentTarget.style.borderColor = "rgba(124,58,237,0.5)")
+              }
+              onBlur={(e) =>
+                (e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)")
+              }
+            />
+          </div>
+
+          {/* Sort Select */}
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            style={{
+              backgroundColor: "#111111",
+              border: "1px solid rgba(255,255,255,0.08)",
+              borderRadius: "10px",
+              color: "white",
+              fontSize: "14px",
+              padding: "12px 14px",
+              outline: "none",
+              cursor: "pointer",
+              appearance: "none",
+              minWidth: "180px",
+              transition: "border-color 0.2s ease",
+            }}
+            onFocus={(e) =>
+              (e.currentTarget.style.borderColor = "rgba(124,58,237,0.5)")
+            }
+            onBlur={(e) =>
+              (e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)")
+            }
+          >
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+            <option value="salary-high">Salary: High to Low</option>
+            <option value="salary-low">Salary: Low to High</option>
+          </select>
+        </div>
+
         {/* Loading State */}
         {isLoading && (
           <div
@@ -106,7 +218,9 @@ export default function JobsPage() {
             }}
           >
             <p style={{ color: "rgba(255, 255, 255, 0.4)", fontSize: "16px" }}>
-              No jobs available.
+              {searchQuery.trim()
+                ? `No jobs found for "${searchQuery}"`
+                : "No jobs available."}
             </p>
           </div>
         )}
